@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "serve": "^5.2.2",
+    "timeago.js": "^3.0.1",
     "vue": "^2.1.8",
     "vue-router": "^2.1.1",
     "vuex": "^2.1.1",

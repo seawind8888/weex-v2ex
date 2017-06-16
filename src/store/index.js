@@ -13,9 +13,7 @@ const store = new Vuex.Store({
     state: {
         isRefresh: false,
         channelName: '最新',
-        listInfo: [],
-        itemInfo: '',
-        itemID: '' 
+        listInfo: []
     },
 })
 
