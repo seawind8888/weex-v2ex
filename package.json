@@ -1,0 +1,46 @@
+{
+  "name": "weex-v2ex",
+  "version": "1.0.0",
+  "description": "a weex project for v2ex",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack --watch",
+    "serve": "serve -p 1345",
+    "android": "weex run android",
+    "ios": "weex run android"
+  },
+  "keywords": [
+    "weex"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^5.2.2",
+    "vue": "^2.1.8",
+    "vue-router": "^2.1.1",
+    "vuex": "^2.1.1",
+    "vuex-router-sync": "^4.2.0",
+    "weex-html5": "^0.4.1",
+    "weex-vue-render": "^0.11.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-runtime": "^6.9.2",
+    "css-loader": "^0.26.1",
+    "quick-local-ip": "^1.0.7",
+    "vue-loader": "^10.0.2",
+    "vue-template-compiler": "^2.1.8",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2",
+    "weex-builder": "^0.2.6",
+    "weex-loader": "^0.4.1"
+  },
+  "optionalDependencies": {
+    "ios-deploy": "^1.9.0"
+  }
+}
