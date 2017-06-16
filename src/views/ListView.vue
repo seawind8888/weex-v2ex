@@ -1,8 +1,33 @@
 <template>
   <div class="wrapper">
+    <div>
+      <ListHeader @pushEmit="slideList" :titleInfo="'最新'"></ListHeader>
+      <list class="list" @loadmore="fetchMore" loadmoreoffset="50">
+        <refresh @refresh="fetchData('latest')" :display="this.$store.state.isRefresh ? 'show' : 'hide'">
+          <text class="refresh-info">正在加载 ...</text>
+        </refresh>
+        <cell class="list-single-cell" v-for="item in this.$store.state.listInfo">
+          <div @click="gotoItem(item.id)">
+            <div class="cell-header-container">
+              <text class="cell-content">{{item.title}}</text>
+              <image :src="'http:' + item.member.avatar_mini " class="cell-avatar"></image>
+            </div>
+            <div class="cell-info-container">
+              <text v-if="item.top" class="top-tag">置顶</text>
+              <text class="time-info">{{ item.last_modified | getLastTimeStr(item.last_modified) }}</text>
+              <div class="cell-block"></div>
+              <div class="cell-end">
+                <text class="auther-info">{{item.member.username}}</text>
+                <text class="channel-info">{{item.node.title}}</text>
+              </div>
+            </div>
+          </div>
+        </cell>
+      </list>
+    </div>
+    <div ref="mask" class="mask"></div>
     <div ref="slide" v-if="isSlide" class="slide-list-container">
       <div class="slide-list-header">
-        <image class="slide-logo" src="http://tz88.com.cn/imgs/logo.png"></image>
       </div>
       <div class="slide-list-main">
         <div @click="tabChannel('all')" class="slide-list-item">
@@ -18,32 +43,6 @@
           <text class="slide-list-info">热门</text>
         </div>
       </div>
-    </div>
-    <div v-else class="slide-list-container"></div>
-    <div>
-      <ListHeader @pushEmit="slideList" :titleInfo="'最新'"></ListHeader>
-      <list class="list" @loadmore="fetchMore" loadmoreoffset="50">
-        <refresh @refresh="fetchData('latest')" :display="this.$store.state.isRefresh ? 'show' : 'hide'">
-          <text class="refresh-info">正在加载 ...</text>
-        </refresh>
-        <cell class="list-single-cell" v-for="item in this.$store.state.listInfo">
-          <div @click="gotoItem(item.id)">
-            <div class="cell-header-container">
-              <text class="cell-content">{{item.title}}</text>
-              <image :src="'http:' + item.member.avatar_mini " class="cell-avatar" ></image>
-            </div>
-            <div class="cell-info-container">
-              <text v-if="item.top" class="top-tag">置顶</text>
-              <text class="time-info">{{ item.last_modified | getLastTimeStr(item.last_modified) }}</text>
-              <div class="cell-block"></div>
-              <div class="cell-end">
-                <text class="auther-info">{{item.member.username}}</text>
-                <text class="channel-info">{{item.node.title}}</text>
-              </div>
-            </div>
-          </div>
-        </cell>
-      </list>
     </div>
   </div>
 </template>
@@ -72,9 +71,18 @@ export default {
     },
     slideList() {
       var self = this
-      var pushEl = self.$refs.slide
+      var maskEl = self.$refs.mask
+      var slideEl = self.$refs.slide
       self.isSlide = true
-      animation.transition(pushEl, {
+      animation.transition(maskEL, {
+        styles: {
+          opacity: 0.6
+        },
+        duration: 200,
+      }, () => {
+
+      })
+      animation.transition(slideEl, {
         styles: {
           transform: 'translateX(500px)'
         },
@@ -83,14 +91,14 @@ export default {
 
       })
     },
-    fetchMore () {
+    fetchMore() {
 
     },
-    fetchData (type) {
-        this.$store.dispatch('FETCH_LIST_DATA', type)
+    fetchData(type) {
+      this.$store.dispatch('FETCH_LIST_DATA', type)
     }
   },
-  mounted () {
+  mounted() {
     this.fetchData('latest')
   }
 }
@@ -100,6 +108,7 @@ export default {
 <style scoped>
 .slide-list-container {
   position: absolute;
+  background-color: #ffffff;
   width: 500px;
   left: 0;
   top: 0;
@@ -108,7 +117,7 @@ export default {
 }
 
 .slide-list-header {
-  height: 100px;
+  height: 200px;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -118,7 +127,9 @@ export default {
   right: 0;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #343434;
+  border-bottom-width: 1px;
+  border-color: #dddddd;
+  border-right-width: 1px;
 }
 
 .refresh-info {
@@ -147,18 +158,21 @@ export default {
   border-color: rgb(191, 191, 191);
   border-bottom-width: 1px
 }
+
 .cell-header-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
+
 .cell-content {
   flex: 1;
   lines: 1;
   font-size: 32;
   text-overflow: ellipsis
 }
+
 .cell-avatar {
   width: 70px;
   height: 70px;
@@ -177,6 +191,7 @@ export default {
 .time-info {
   color: rgb(156, 156, 156)
 }
+
 .top-tag {
   color: #ffffff;
   background-color: rgb(128, 196, 102);
@@ -192,13 +207,14 @@ export default {
 .cell-block {
   flex: 1;
 }
+
 .cell-end {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-
 }
+
 .auther-info {
   color: rgb(126, 126, 126)
 }
@@ -208,5 +224,13 @@ export default {
   color: rgb(191, 191, 191);
   margin-left: 10px;
 }
-
+.mask {
+  position: fixed;
+  opacity: 0;
+  background: #000000;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0
+}
 </style>
