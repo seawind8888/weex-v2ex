@@ -1,8 +1,8 @@
 <template>
     <div class="header-container">
-        <image class="header-icon" @click="pushListEmit()" src="https://ooo.0o0.ooo/2017/06/16/5943a56ec91dd.png"></image>
+        <image class="header-icon first-icon" @click="leftAction()" src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png"></image>
         <text class="hedaer-info">{{titleInfo}}</text>
-        <image class="header-icon" src="http://tz88.com.cn/imgs/edit.png"></image>
+        <image class="header-icon" @click="rightAction()" src="https://ooo.0o0.ooo/2017/06/19/59478507badfe.png"></image>
     </div>
 </template>
 <style>
@@ -29,16 +29,23 @@
     font-size: 32
 }
 .header-icon {
-    width: 50px;
-    height: 50px
+    width: 40px;
+    height: 40px
+}
+.first-icon {
+    width: 36px;
+    height: 36px;
 }
 </style>
 <script>
     export default {
         props: ['titleInfo'],
         methods: {
-            pushListEmit() {
-                this.$emit('pushEmit')
+            leftAction() {
+                this.$emit('leftEmit')
+            },
+            rightAction() {
+                this.$emit('rightEmit')
             }
         }
     }
