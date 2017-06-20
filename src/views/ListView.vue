@@ -40,8 +40,24 @@
             <text class="slide-list-info">最新</text>
           </div>
           <div class="slide-list-item">
-            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/19/594780e7ea2b1.png"></image>
-            <text class="slide-list-info">最热</text>
+            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51835a86.png"></image>
+            <text class="slide-list-info">分类</text>
+          </div>
+          <div class="slide-list-item">
+            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d518223b1.png"></image>
+            <text class="slide-list-info">节点</text>
+          </div>
+          <div class="slide-list-item">
+            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d5184aa2f.png"></image>
+            <text class="slide-list-info">收藏</text>
+          </div>
+          <div class="slide-list-item">
+            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51834c2c.png"></image>
+            <text class="slide-list-info">提醒</text>
+          </div>
+          <div class="slide-list-item">
+            <image style="width:40px;height:40px"  src="https://ooo.0o0.ooo/2017/06/20/5948d51839490.png" ></image>
+            <text class="slide-list-info">个人</text>
           </div>
         </div>
       </div>
