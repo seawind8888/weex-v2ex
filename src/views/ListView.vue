@@ -3,12 +3,8 @@
     <div>
       <ListHeader @leftEmit="slideShow()" @rightEmit="channelSlide()" :titleInfo="'最新'"></ListHeader>
       <div v-if="this.$store.state.isRefresh ? false : true" class="channel-list-container">
-        <div class="channel-item-container">
-          <text :class="this.$store.state.channelName === '最新'？'channel-select':''" class="channel-item-info">最新</text>
-        </div>
-        <div class="channel-item-container">
-          <text :class="this.$store.state.channelName === '最热'？'channel-select':''" class="channel-item-info">最热</text>
-        </div>
+        <text :class="[ this.$store.state.channelName === '最新' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
+        <text :class="[ this.$store.state.channelName === '最热' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
       </div>
       <list ref="list" loadmoreoffset="50">
         <refresh @refresh="fetchData('latest')" :display="this.$store.state.isRefresh ? 'show' : 'hide'">
@@ -39,11 +35,11 @@
           <image class="slide-header-icon" src="https://ooo.0o0.ooo/2017/06/19/594781900d2b2.png"></image>
         </div>
         <div class="slide-list-main">
-          <div @click="tabChannel('all')" class="slide-list-item">
+          <div class="slide-list-item">
             <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/19/59477d6c90140.png"></image>
             <text class="slide-list-info">最新</text>
           </div>
-          <div @click="tabChannel('hot')" class="slide-list-item">
+          <div class="slide-list-item">
             <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/19/594780e7ea2b1.png"></image>
             <text class="slide-list-info">最热</text>
           </div>
@@ -75,7 +71,12 @@ export default {
   },
   methods: {
     tabChannel(type) {
-
+      return new Promise((resolve, reject) => {
+        resolve()
+        this.channelSlide()
+      }).then(() => {
+        this.fetchData(type)
+      })
     },
     slideShow(e) {
       let maskEl = this.$refs.slideMask
@@ -145,6 +146,7 @@ export default {
     gotoItem() {
     },
     fetchData(type) {
+      console.log(type)
       this.$store.dispatch('FETCH_LIST_DATA', type)
     }
   },
@@ -175,9 +177,14 @@ export default {
 }
 
 .channel-item-info {
+  width: 300px;
+  height: 80px;
+  line-height: 80px;
+  padding-left: 40px;
   font-size: 32px;
   color: rgb(126, 126, 126)
 }
+
 .channel-select {
   color: rgb(83, 187, 224);
   background-color: #e9e9e9
@@ -349,5 +356,4 @@ export default {
   width: 50px;
   height: 50px
 }
-
 </style>

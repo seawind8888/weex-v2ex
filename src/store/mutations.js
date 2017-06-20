@@ -4,5 +4,5 @@ export function FETCH_INIT(state) {
 
 export function FETCH_LIST_FINISH(state, [list]) {
     state.isRefresh = false
-    state.listInfo = state.listInfo.concat(list)
+    state.listInfo = list
 }
