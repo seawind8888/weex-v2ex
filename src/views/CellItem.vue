@@ -179,6 +179,7 @@ export default {
 }
 
 .other-info {
+  font-size: 30px;
   color: rgb(156, 156, 156)
 }
 

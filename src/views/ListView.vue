@@ -5,11 +5,11 @@
         <image class="header-icon first-icon" src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png"></image>
       </div>
       <text class="hedaer-info">{{this.$store.state.channelName}}</text>
-      <div class="header-btn-container last-btn" @click="rchannelSlide()">
+      <div class="header-btn-container last-btn" @click="channelSlide()">
         <image class="header-icon" src="https://ooo.0o0.ooo/2017/06/19/59478507badfe.png"></image>
       </div>
     </div>
-    <div v-if="this.$store.state.isRefresh ? false : true" class="channel-list-container">
+    <div ref="channel" class="channel-list-container">
       <text :class="[ this.$store.state.channelName === '最新' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
       <text :class="[ this.$store.state.channelName === '最热' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
     </div>
@@ -138,10 +138,19 @@ export default {
     },
     channelSlide() {
       let listEl = this.$refs.list
+      let channelEl = this.$refs.channel
       if (this.isChannelShow) {
         animation.transition(listEl, {
           styles: {
             transform: 'translateX(0)'
+          },
+          duration: 200,
+        }, () => {
+
+        })
+        animation.transition(channelEl, {
+          styles: {
+            transform: 'translateX(300px)'
           },
           duration: 200,
         }, () => {
@@ -159,6 +168,14 @@ export default {
       }, () => {
 
       })
+      animation.transition(channelEl, {
+          styles: {
+            transform: 'translateX(0)'
+          },
+          duration: 200,
+        }, () => {
+
+        })
     },
     gotoItem(id) {
       this.$router.push(`/show/${id}`)
@@ -229,6 +246,7 @@ export default {
   bottom: 0;
   right: 0;
   width: 300px;
+  transform: translateX(300px);
   background-color: rgb(242, 242, 242)
 }
 
@@ -312,6 +330,7 @@ export default {
 }
 
 .time-info {
+  font-size: 30px;
   color: rgb(156, 156, 156)
 }
 
