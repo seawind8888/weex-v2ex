@@ -23,7 +23,7 @@ export default new VueRouter({
         path: '/hot',
         component: createListView('job')
     }, {
-        path: '/show',
+        path: '/show/:id',
         component: CellItem
     }]
 });

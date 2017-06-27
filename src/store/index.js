@@ -13,7 +13,11 @@ const store = new Vuex.Store({
     state: {
         isRefresh: false,
         channelName: '最新',
-        listInfo: []
+        listInfo: [],
+        listDetail: {
+            member: ''
+        },
+        listComment: []
     },
 })
 

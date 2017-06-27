@@ -1,90 +1,91 @@
 <template>
   <div class="wrapper">
-    <div>
-      <ListHeader @leftEmit="slideShow()" @rightEmit="channelSlide()" :titleInfo="'最新'"></ListHeader>
-      <div v-if="this.$store.state.isRefresh ? false : true" class="channel-list-container">
-        <text :class="[ this.$store.state.channelName === '最新' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
-        <text :class="[ this.$store.state.channelName === '最热' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
+    <div class="header-container">
+      <div class="header-btn-container" @click="slideShow()">
+        <image class="header-icon first-icon" src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png"></image>
       </div>
-      <list ref="list" loadmoreoffset="50">
-        <refresh @refresh="fetchData('latest')" :display="this.$store.state.isRefresh ? 'show' : 'hide'">
-          <text class="refresh-info">正在加载 ...</text>
-        </refresh>
-        <cell @click="gotoItem()" class="list-single-cell" v-for="item in this.$store.state.listInfo">
-          <div>
-            <div class="cell-header-container">
-              <text class="cell-content">{{item.title}}</text>
-              <image :src="'http:' + item.member.avatar_mini " class="cell-avatar"></image>
-            </div>
-            <div class="cell-info-container">
-              <text v-if="item.top" class="top-tag">置顶</text>
-              <text class="time-info">{{ item.last_modified | getLastTimeStr(item.last_modified) }}</text>
-              <div class="cell-block"></div>
-              <div class="cell-end">
-                <text class="auther-info">{{item.member.username}}</text>
-                <text class="channel-info">{{item.node.title}}</text>
-              </div>
+      <text class="hedaer-info">{{this.$store.state.channelName}}</text>
+      <div class="header-btn-container last-btn" @click="rchannelSlide()">
+        <image class="header-icon" src="https://ooo.0o0.ooo/2017/06/19/59478507badfe.png"></image>
+      </div>
+    </div>
+    <div v-if="this.$store.state.isRefresh ? false : true" class="channel-list-container">
+      <text :class="[ this.$store.state.channelName === '最新' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
+      <text :class="[ this.$store.state.channelName === '最热' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
+    </div>
+    <list ref="list" loadmoreoffset="50">
+      <refresh @refresh="fetchData('latest')" :display="this.$store.state.isRefresh ? 'show' : 'hide'">
+        <text class="refresh-info">正在加载 ...</text>
+      </refresh>
+      <cell @click="gotoItem(item.id)" class="list-single-cell" v-for="item in this.$store.state.listInfo">
+        <div>
+          <div class="cell-header-container">
+            <text class="cell-content">{{item.title}}</text>
+            <image :src="'http:' + item.member.avatar_normal " class="cell-avatar"></image>
+          </div>
+          <div class="cell-info-container">
+            <text v-if="item.top" class="top-tag">置顶</text>
+            <text class="time-info">{{ item.last_modified | getLastTimeStr }}</text>
+            <div class="cell-block"></div>
+            <div class="cell-end">
+              <text class="auther-info">{{item.member.username}}</text>
+              <text class="channel-info">{{item.node.title}}</text>
             </div>
           </div>
-        </cell>
-      </list>
-      <div ref="slideMask" class="mask"></div>
-      <div v-if="isSlide" @click="slideHide()" class="mask mask-blcok"></div>
-      <div ref="slideMenu" class="slide-list-container">
-        <div class="slide-list-header">
-          <image class="slide-header-icon" src="https://ooo.0o0.ooo/2017/06/19/594781900d2b2.png"></image>
         </div>
-        <div class="slide-list-main">
-          <div class="slide-list-item">
-            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/19/59477d6c90140.png"></image>
-            <text class="slide-list-info">最新</text>
-          </div>
-          <div class="slide-list-item">
-            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51835a86.png"></image>
-            <text class="slide-list-info">分类</text>
-          </div>
-          <div class="slide-list-item">
-            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d518223b1.png"></image>
-            <text class="slide-list-info">节点</text>
-          </div>
-          <div class="slide-list-item">
-            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d5184aa2f.png"></image>
-            <text class="slide-list-info">收藏</text>
-          </div>
-          <div class="slide-list-item">
-            <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51834c2c.png"></image>
-            <text class="slide-list-info">提醒</text>
-          </div>
-          <div class="slide-list-item">
-            <image style="width:40px;height:40px"  src="https://ooo.0o0.ooo/2017/06/20/5948d51839490.png" ></image>
-            <text class="slide-list-info">个人</text>
-          </div>
+      </cell>
+    </list>
+    <div ref="slideMask" class="mask"></div>
+    <div v-if="isSlide" @click="slideHide()" class="mask mask-blcok"></div>
+    <div ref="slideMenu" class="slide-list-container">
+      <div class="slide-list-header">
+        <image class="slide-header-icon" src="https://ooo.0o0.ooo/2017/06/19/594781900d2b2.png"></image>
+      </div>
+      <div class="slide-list-main">
+        <div class="slide-list-item">
+          <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/19/59477d6c90140.png"></image>
+          <text class="slide-list-info">最新</text>
+        </div>
+        <div class="slide-list-item">
+          <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51835a86.png"></image>
+          <text class="slide-list-info">分类</text>
+        </div>
+        <div class="slide-list-item">
+          <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d518223b1.png"></image>
+          <text class="slide-list-info">节点</text>
+        </div>
+        <div class="slide-list-item">
+          <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d5184aa2f.png"></image>
+          <text class="slide-list-info">收藏</text>
+        </div>
+        <div class="slide-list-item">
+          <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51834c2c.png"></image>
+          <text class="slide-list-info">提醒</text>
+        </div>
+        <div class="slide-list-item">
+          <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51839490.png"></image>
+          <text class="slide-list-info">个人</text>
         </div>
       </div>
     </div>
-  
   </div>
 </template>
 
 <script>
-import utils from '../common/utils.js'
-import ListHeader from '../components/ListHeader.vue'
+// import utils from '../common/utils.js'
 const animation = weex.requireModule('animation')
 export default {
-  components: {
-    ListHeader
-  },
   data() {
     return {
       isSlide: false,
       isChannelShow: false
     }
   },
-  filters: {
-    getLastTimeStr(time, isFromNow) {
-      return utils.getLastTimeStr(time, isFromNow);
-    }
-  },
+  // filters: {
+  //   getLastTimeStr(time, isFromNow) {
+  //     return utils.getLastTimeStr(time, isFromNow);
+  //   }
+  // },
   methods: {
     tabChannel(type) {
       return new Promise((resolve, reject) => {
@@ -159,7 +160,8 @@ export default {
 
       })
     },
-    gotoItem() {
+    gotoItem(id) {
+      this.$router.push(`/show/${id}`)
     },
     fetchData(type) {
       console.log(type)
@@ -174,6 +176,53 @@ export default {
 </script>
 
 <style scoped>
+.header-container {
+  height: 100px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #ffffff;
+  border-bottom-width: 1px;
+  border-color: #dddddd
+}
+
+.last-btn {
+  align-items: flex-end;
+}
+
+.hedaer-info {
+  color: #000000;
+  text-align: center;
+  line-height: 100px;
+  flex: 1;
+  font-size: 32
+}
+
+.header-btn-container {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px
+}
+
+.first-icon {
+  width: 36px;
+  height: 36px;
+}
+
+
 .channel-list-container {
   position: absolute;
   top: 100px;

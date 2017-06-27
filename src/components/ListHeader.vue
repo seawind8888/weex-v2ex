@@ -1,11 +1,12 @@
 <template>
     <div class="header-container">
         <div class="header-btn-container" @click="leftAction()">
-            <image class="header-icon first-icon" src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png"></image>
+            <image class="header-icon first-icon" v-if="back" src="https://ooo.0o0.ooo/2017/06/27/5951fd9341fa5.png" ></image>
+            <image class="header-icon first-icon" v-else src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png" ></image>
         </div>
         <text class="hedaer-info">{{titleInfo}}</text>
-        <div class="header-btn-container last-btn" @click="rightAction()">
-            <image class="header-icon" src="https://ooo.0o0.ooo/2017/06/19/59478507badfe.png"></image>
+        <div v-if="!back" class="header-btn-container last-btn" @click="rightAction()">
+            <image class="header-icon"  src="https://ooo.0o0.ooo/2017/06/19/59478507badfe.png"></image>
         </div>
     </div>
 </template>
@@ -57,7 +58,7 @@
 </style>
 <script>
 export default {
-    props: ['titleInfo'],
+    props: ['titleInfo','back'],
     methods: {
         leftAction() {
             this.$emit('leftEmit')
