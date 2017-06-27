@@ -36,7 +36,7 @@
       </cell>
     </list>
     <div ref="slideMask" class="mask"></div>
-    <div v-if="isSlide" @click="slideHide()" class="mask mask-blcok"></div>
+    <!--<div v-if="isSlide"  class="mask mask-blcok"></div>-->
     <div ref="slideMenu" class="slide-list-container">
       <div class="slide-list-header">
         <image class="slide-header-icon" src="https://ooo.0o0.ooo/2017/06/19/594781900d2b2.png"></image>
@@ -116,6 +116,7 @@ export default {
       })
     },
     slideHide() {
+      
       this.isSlide = false
       let maskEl = this.$refs.slideMask
       let slideEl = this.$refs.slideMenu
@@ -178,6 +179,10 @@ export default {
         })
     },
     gotoItem(id) {
+      if(this.isSlide){
+        this.slideHide()
+        return
+      }
       this.$router.push(`/show/${id}`)
     },
     fetchData(type) {
