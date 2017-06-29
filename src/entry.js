@@ -2,7 +2,7 @@ import router from './router'
 import App from './App.vue'
 import filters from './filters';
 import { sync } from 'vuex-router-sync'
-import store from './store'
+import store from './vuex'
 
 sync(store, router)
 

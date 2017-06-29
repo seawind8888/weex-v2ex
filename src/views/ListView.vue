@@ -4,20 +4,28 @@
       <div class="header-btn-container" @click="slideShow()">
         <image class="header-icon first-icon" src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png"></image>
       </div>
-      <text class="hedaer-info">{{this.$store.state.channelName}}</text>
+      <text class="hedaer-info">{{channelName}}</text>
       <div class="header-btn-container last-btn" @click="channelSlide()">
         <image class="header-icon" src="https://ooo.0o0.ooo/2017/06/19/59478507badfe.png"></image>
       </div>
     </div>
     <div ref="channel" class="channel-list-container">
-      <text :class="[ this.$store.state.channelName === '最新' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
-      <text :class="[ this.$store.state.channelName === '最热' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
+      <text :class="[ channel === 'latest' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
+      <text :class="[ channel === 'hot' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
+      <text :class="[ channel === 'tech' ? 'channel-select':'' ]" @click="tabChannel('tech',true)" class="channel-item-info">技术</text>
+      <text :class="[ channel === 'jobs' ? 'channel-select':'' ]" @click="tabChannel('jobs',true)" class="channel-item-info">酷工作</text>
+      <text :class="[ channel === 'programmer' ? 'channel-select':'' ]" @click="tabChannel('programmer',true)" class="channel-item-info">程序员</text>
+      <text :class="[ channel === 'ideas' ? 'channel-select':'' ]" @click="tabChannel('jobs',true)" class="channel-item-info">奇思妙想</text>
+      <text :class="[ channel === 'qna' ? 'channel-select':'' ]" @click="tabChannel('qna',true)" class="channel-item-info">问与答</text>
+      <text :class="[ channel === 'linux' ? 'channel-select':'' ]" @click="tabChannel('linux',true)" class="channel-item-info">Linux</text>
+      <text :class="[ channel === 'php' ? 'channel-select':'' ]" @click="tabChannel('php',true)" class="channel-item-info">PHP</text>
+      <text :class="[ channel === 'python' ? 'channel-select':'' ]" @click="tabChannel('python',true)" class="channel-item-info">Python</text>
     </div>
     <list ref="list" loadmoreoffset="50">
-      <refresh @refresh="fetchData('latest')" :display="this.$store.state.isRefresh ? 'show' : 'hide'">
+      <refresh @refresh="fetchData('latest')" :display="refresh ? 'show' : 'hide'">
         <text class="refresh-info">正在加载 ...</text>
       </refresh>
-      <cell @click="gotoItem(item.id)" class="list-single-cell" v-for="item in this.$store.state.listInfo">
+      <cell @click="goToItem(item.id)" :key="item.id" class="list-single-cell" v-for="item in this.$store.state.listInfo">
         <div>
           <div class="cell-header-container">
             <text class="cell-content">{{item.title}}</text>
@@ -35,34 +43,35 @@
         </div>
       </cell>
     </list>
-    <div ref="slideMask" class="mask"></div>
+    <div v-if="!isWeb" ref="slideMask" class="mask"></div>
+    <div v-if="isWeb && isSlideShow" @click="slideHide()"  ref="slideMask" class="mask"></div>
     <!--<div v-if="isSlide"  class="mask mask-blcok"></div>-->
     <div ref="slideMenu" class="slide-list-container">
       <div class="slide-list-header">
         <image class="slide-header-icon" src="https://ooo.0o0.ooo/2017/06/19/594781900d2b2.png"></image>
       </div>
       <div class="slide-list-main">
-        <div class="slide-list-item">
+        <div @click="goToListItem()" bubble="false" class="slide-list-item">
           <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/19/59477d6c90140.png"></image>
           <text class="slide-list-info">最新</text>
         </div>
-        <div class="slide-list-item">
+        <div @click="goToListItem()" bubble="false" class="slide-list-item">
           <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51835a86.png"></image>
           <text class="slide-list-info">分类</text>
         </div>
-        <div class="slide-list-item">
+        <div @click="goToListItem()" bubble="false" class="slide-list-item">
           <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d518223b1.png"></image>
           <text class="slide-list-info">节点</text>
         </div>
-        <div class="slide-list-item">
+        <div @click="goToListItem()" bubble="false" class="slide-list-item">
           <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d5184aa2f.png"></image>
           <text class="slide-list-info">收藏</text>
         </div>
-        <div class="slide-list-item">
+        <div @click="goToListItem()" bubble="false" class="slide-list-item">
           <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51834c2c.png"></image>
           <text class="slide-list-info">提醒</text>
         </div>
-        <div class="slide-list-item">
+        <div @click="goToListItem()" bubble="false" class="slide-list-item">
           <image style="width:40px;height:40px" src="https://ooo.0o0.ooo/2017/06/20/5948d51839490.png"></image>
           <text class="slide-list-info">个人</text>
         </div>
@@ -72,39 +81,53 @@
 </template>
 
 <script>
-// import utils from '../common/utils.js'
 const animation = weex.requireModule('animation')
+const navigator = weex.requireModule('navigator')
+var modal = weex.requireModule('modal')
 export default {
   data() {
     return {
-      isSlide: false,
-      isChannelShow: false
+      isSlideShow: false,
+      isMaskShow: false,
+      isChannelShow: false,
+      isWeb: weex.config.env.platform === 'Web'
     }
   },
-  // filters: {
-  //   getLastTimeStr(time, isFromNow) {
-  //     return utils.getLastTimeStr(time, isFromNow);
-  //   }
-  // },
+  computed: {
+    channel() {
+      return this.$store.state.channel
+    },
+    channelName() {
+      return this.$store.state.channelName
+    },
+    refresh() {
+      return this.$store.state.isRefresh
+    }
+  },
   methods: {
-    tabChannel(type) {
+    tabChannel(type, node) {
       return new Promise((resolve, reject) => {
         resolve()
         this.channelSlide()
       }).then(() => {
+        if (node) {
+          this.fetchNode(type)
+          return
+        }
         this.fetchData(type)
       })
     },
     slideShow(e) {
       let maskEl = this.$refs.slideMask
       let slideEl = this.$refs.slideMenu
+      this.isSlideShow = true
       animation.transition(maskEl, {
         styles: {
           opacity: 0.6
         },
         duration: 200,
       }, () => {
-        this.isSlide = true
+
       })
       animation.transition(slideEl, {
         styles: {
@@ -117,7 +140,6 @@ export default {
     },
     slideHide() {
       
-      this.isSlide = false
       let maskEl = this.$refs.slideMask
       let slideEl = this.$refs.slideMenu
       animation.transition(maskEl, {
@@ -134,12 +156,16 @@ export default {
         },
         duration: 200,
       }, () => {
-
+        this.isSlideShow = false
       })
     },
     channelSlide() {
       let listEl = this.$refs.list
       let channelEl = this.$refs.channel
+      if (this.isSlideShow) {
+        this.slideHide()
+        return
+      }
       if (this.isChannelShow) {
         animation.transition(listEl, {
           styles: {
@@ -170,28 +196,49 @@ export default {
 
       })
       animation.transition(channelEl, {
-          styles: {
-            transform: 'translateX(0)'
-          },
-          duration: 200,
-        }, () => {
+        styles: {
+          transform: 'translateX(0)'
+        },
+        duration: 200,
+      }, () => {
 
-        })
+      })
     },
-    gotoItem(id) {
-      if(this.isSlide){
+    goToListItem() {
+      modal.toast({
+        message: '待开发',
+        duration: 0.3
+      })
+    },
+    goToItem(id) {
+      if (this.isSlideShow) {
         this.slideHide()
         return
       }
-      this.$router.push(`/show/${id}`)
+      if (this.isChannelShow) {
+        this.channelSlide()
+        return
+      }
+      if(this.isWeb){
+        this.$router.push(`/show/${id}`)
+      } else {
+        let url = weex.config.bundleUrl.split(':8088')[0]
+        console.log(url)
+        navigator.push({
+          url: `${url}:8010/dist/weex/views/CellItem.js?id=` + id,
+          animated: "true"
+        }, () => { })
+      }
+    },
+    fetchNode(type) {
+      this.$store.dispatch('FETCH_NODE_DATA', type)
     },
     fetchData(type) {
-      console.log(type)
       this.$store.dispatch('FETCH_LIST_DATA', type)
     }
   },
   mounted() {
-    this.fetchData('latest')
+    this.fetchData(this.$store.state.channel)
   }
 }
 

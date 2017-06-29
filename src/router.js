@@ -4,25 +4,15 @@ import CellItem from './views/CellItem.vue'
 
 Vue.use(VueRouter);
 
-function createListView (type) {
-  return {
-    render (createElement) {
-      return createElement(ListView, { props: { type } })
-    }
-  }
-}
 
 export default new VueRouter({
     routes: [{
         path: '',
-        redirect: '/latest'
+        redirect: '/post'
     }, {
-        path: '/latest',
-        component: createListView('all')
-    }, {
-        path: '/hot',
-        component: createListView('job')
-    }, {
+        path: '/post',
+        component: ListView
+    },{
         path: '/show/:id',
         component: CellItem
     }]

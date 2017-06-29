@@ -23,7 +23,8 @@
           <text class="other-info">{{ detail.last_modified | getLastTimeStr }},{{detail.replies}}条回复</text>
         </div>
         <text class="info-content">{{detail.content}}</text>
-        <div class="comment-item-container" v-for="item in this.$store.state.listComment">
+        <div class="comment-container">
+          <div class="comment-item-container" :key="item.id" v-for="item in this.$store.state.listComment">
           <div class="item-left">
             <image class="comment-user-avatar" :src="'http:' + item.member.avatar_normal"></image>
           </div>
@@ -35,28 +36,9 @@
             <text class="comment-info">{{item.content}}</text>
           </div>
         </div>
+        </div>     
       </div>
-  
     </scroller>
-    <!--<div class="comment-container">
-          <list>
-            <refresh :display="this.$store.state.isRefresh ? 'show' : 'hide'">
-              <text class="refresh-info">正在加载 ...</text>
-            </refresh>
-            <cell class="comment-item-container" v-for="item in this.$store.state.listComment">
-              <div class="item-left">
-                <image class="comment-user-avatar" :src="'http:' + item.member.avatar_normal"></image>
-              </div>
-              <div class="item-right">
-                <div class="item-right-top">
-                  <text class="comment-user-name">{{item.member.username}}</text>
-                  <text class="comment-time">{{item.last_modified | getLastTimeStr}}</text>
-                </div>
-                <text class="comment-info">{{item.content}}</text>
-              </div>
-            </cell>
-          </list>
-        </div>-->
   </div>
 </template>
 <script>
@@ -67,6 +49,7 @@ export default {
     },
   },
   created() {
+    console.log(this.$route.params.id)
     this.fetchData()
     this.$store.dispatch('FETCH_COMMENT_INFO', this.$route.params.id)
   },
@@ -188,6 +171,9 @@ export default {
   color: rgb(126, 126, 126);
   line-height: 50px;
   margin-bottom: 30px;
+}
+.comment-container {
+  margin-top: 20px;
 }
 
 .comment-item-container {

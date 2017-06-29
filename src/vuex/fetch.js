@@ -1,5 +1,5 @@
 const stream = weex.requireModule('stream')
-
+//最新
 export function fetchList (type) {
     return new Promise((resolve, reject) => {
         stream.fetch({
@@ -16,7 +16,24 @@ export function fetchList (type) {
         }, () => {})
     })
 }
-
+//节点
+export function fetchNode (type) {
+    return new Promise((resolve, reject) => {
+        stream.fetch({
+            method: 'GET',
+            url: `https://www.v2ex.com/api/topics/show.json?node_name=${type}`,
+            type: 'json'
+        }, (response) => {
+            if (response.status == 200) {
+                resolve(response.data)
+            }
+            else {
+                reject(response)
+            }
+        }, () => {})
+    })
+}
+//详情
 export function fetchDetail (id) {
     return new Promise((resolve, reject) => {
         stream.fetch({
@@ -33,7 +50,7 @@ export function fetchDetail (id) {
         }, () => {})
     })
 }
-
+//评论
 export function fetchComment (id) {
     return new Promise((resolve, reject) => {
         stream.fetch({
