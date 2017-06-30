@@ -24,24 +24,34 @@
 ### web
 ```
 1.npm run dev
+
 2.npm run serve
-3.http://localhost:8010
+
+3.open http://localhost:8010
+
 ```
 
 ### android
 ```
 1.npm run dev
+
 2.weexpack platform add android
+
 3.weexpack run android
+
 ```
 
 ### ios
 ```
 1.npm run dev
+
 2.weexpack platform add ios
+
 3.cd platform/ios
+
 4.pod install
 #需安装CocoaPods环境,并且将Podfile ATSDK-weex 改为 ATSDK，不然会报错！
+
 5.weexpack run ios
 #如报错可使用xcode直接运行
 ```
