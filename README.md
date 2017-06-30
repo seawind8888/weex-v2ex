@@ -67,7 +67,7 @@
 - IOS项目里的Podfile 需将 ATSDK-weex 改为 ATSDK
 
 ## 5.运行效果 
-<br/>
+
 ### web
 
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-web.gif) 
