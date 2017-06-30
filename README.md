@@ -19,7 +19,7 @@
 ```
 ## 3.启动项目
 
-### web
+### --web
 ```
 1.npm run dev
 
@@ -28,7 +28,7 @@
 3.open http://localhost:8010
 ```
 
-### android
+### --android
 ```
 1.npm run dev
 
@@ -37,7 +37,7 @@
 3.weexpack run android
 ```
 
-### ios
+### --ios
 ```
 1.npm run dev
 
@@ -52,7 +52,7 @@
 # 如报错可使用xcode直接运行
 ```
 
-### 调试
+### --调试
 ```
 1.npm install -g weex-toolkit
 # 调试工具
@@ -68,15 +68,15 @@
 
 ## 5.运行效果 
 
-### web
+### --web
 
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-web.gif) 
 <br/>
-### android
+### --android
 
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-android.gif)
 <br/>
-### ios
+### --ios
 
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-ios.gif)  
 
