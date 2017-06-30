@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="header-container">
+    <div :class="[platForm === 'Web'?'web-header':'']" class="header-container">
       <div class="header-btn-container" @click="slideShow()">
         <image class="header-icon first-icon" src="https://ooo.0o0.ooo/2017/06/19/594785476b9e2.png"></image>
       </div>
@@ -12,17 +12,17 @@
     <div ref="channel" class="channel-list-container">
       <text :class="[ channel === 'latest' ? 'channel-select':'' ]" @click="tabChannel('latest')" class="channel-item-info">最新</text>
       <text :class="[ channel === 'hot' ? 'channel-select':'' ]" @click="tabChannel('hot')" class="channel-item-info">最热</text>
-      <text :class="[ channel === 'tech' ? 'channel-select':'' ]" @click="tabChannel('tech',true)" class="channel-item-info">技术</text>
-      <text :class="[ channel === 'jobs' ? 'channel-select':'' ]" @click="tabChannel('jobs',true)" class="channel-item-info">酷工作</text>
+      <text :class="[ channel === 'tech' ? 'channel-select':'' ]" @click="tabChannel('tech')" class="channel-item-info">技术</text>
+      <text :class="[ channel === 'jobs' ? 'channel-select':'' ]" @click="tabChannel('jobs')" class="channel-item-info">酷工作</text>
       <text :class="[ channel === 'programmer' ? 'channel-select':'' ]" @click="tabChannel('programmer',true)" class="channel-item-info">程序员</text>
-      <text :class="[ channel === 'ideas' ? 'channel-select':'' ]" @click="tabChannel('jobs',true)" class="channel-item-info">奇思妙想</text>
-      <text :class="[ channel === 'qna' ? 'channel-select':'' ]" @click="tabChannel('qna',true)" class="channel-item-info">问与答</text>
-      <text :class="[ channel === 'linux' ? 'channel-select':'' ]" @click="tabChannel('linux',true)" class="channel-item-info">Linux</text>
-      <text :class="[ channel === 'php' ? 'channel-select':'' ]" @click="tabChannel('php',true)" class="channel-item-info">PHP</text>
-      <text :class="[ channel === 'python' ? 'channel-select':'' ]" @click="tabChannel('python',true)" class="channel-item-info">Python</text>
+      <text :class="[ channel === 'ideas' ? 'channel-select':'' ]" @click="tabChannel('jobs')" class="channel-item-info">奇思妙想</text>
+      <text :class="[ channel === 'qna' ? 'channel-select':'' ]" @click="tabChannel('qna')" class="channel-item-info">问与答</text>
+      <text :class="[ channel === 'linux' ? 'channel-select':'' ]" @click="tabChannel('linux')" class="channel-item-info">Linux</text>
+      <text :class="[ channel === 'php' ? 'channel-select':'' ]" @click="tabChannel('php')" class="channel-item-info">PHP</text>
+      <text :class="[ channel === 'python' ? 'channel-select':'' ]" @click="tabChannel('python')" class="channel-item-info">Python</text>
     </div>
-    <list ref="list" loadmoreoffset="50">
-      <refresh @refresh="fetchData('latest')" :display="refresh ? 'show' : 'hide'">
+    <list :class="platForm === 'Web'?'list-container': ''"  ref="list" loadmoreoffset="50">
+      <refresh @refresh="fetchData()" :display="refresh ? 'show' : 'hide'">
         <text class="refresh-info">正在加载 ...</text>
       </refresh>
       <cell @click="goToItem(item.id)" :key="item.id" class="list-single-cell" v-for="item in this.$store.state.listInfo">
@@ -43,8 +43,9 @@
         </div>
       </cell>
     </list>
-    <div v-if="!isWeb" ref="slideMask" class="mask"></div>
-    <div v-if="isWeb && isSlideShow" @click="slideHide()"  ref="slideMask" class="mask"></div>
+    <div v-if="platForm === 'android'"  ref="slideMask" class="mask"></div>
+    <div v-if="platForm === 'iOS'" @click="slideHide()"  ref="slideMask" class="mask"></div>
+    <div v-if="platForm === 'Web' && isSlideShow" @click="slideHide()" ref="slideMask" class="mask"></div>
     <!--<div v-if="isSlide"  class="mask mask-blcok"></div>-->
     <div ref="slideMenu" class="slide-list-container">
       <div class="slide-list-header">
@@ -82,7 +83,6 @@
 
 <script>
 const animation = weex.requireModule('animation')
-const navigator = weex.requireModule('navigator')
 var modal = weex.requireModule('modal')
 export default {
   data() {
@@ -90,7 +90,7 @@ export default {
       isSlideShow: false,
       isMaskShow: false,
       isChannelShow: false,
-      isWeb: weex.config.env.platform === 'Web'
+      platForm: weex.config.env.platform
     }
   },
   computed: {
@@ -105,15 +105,11 @@ export default {
     }
   },
   methods: {
-    tabChannel(type, node) {
+    tabChannel(type) {
       return new Promise((resolve, reject) => {
         resolve()
         this.channelSlide()
       }).then(() => {
-        if (node) {
-          this.fetchNode(type)
-          return
-        }
         this.fetchData(type)
       })
     },
@@ -139,7 +135,7 @@ export default {
       })
     },
     slideHide() {
-      
+
       let maskEl = this.$refs.slideMask
       let slideEl = this.$refs.slideMenu
       animation.transition(maskEl, {
@@ -162,7 +158,9 @@ export default {
     channelSlide() {
       let listEl = this.$refs.list
       let channelEl = this.$refs.channel
+      console.log(1)
       if (this.isSlideShow) {
+        
         this.slideHide()
         return
       }
@@ -219,26 +217,14 @@ export default {
         this.channelSlide()
         return
       }
-      if(this.isWeb){
-        this.$router.push(`/show/${id}`)
-      } else {
-        let url = weex.config.bundleUrl.split(':8088')[0]
-        console.log(url)
-        navigator.push({
-          url: `${url}:8010/dist/weex/views/CellItem.js?id=` + id,
-          animated: "true"
-        }, () => { })
-      }
-    },
-    fetchNode(type) {
-      this.$store.dispatch('FETCH_NODE_DATA', type)
+      this.$router.push(`/show/${id}`)
     },
     fetchData(type) {
       this.$store.dispatch('FETCH_LIST_DATA', type)
     }
   },
   mounted() {
-    this.fetchData(this.$store.state.channel)
+    this.fetchData('latest')
   }
 }
 
@@ -247,7 +233,7 @@ export default {
 <style scoped>
 .header-container {
   height: 100px;
-  position: relative;
+  width: 750px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -260,6 +246,11 @@ export default {
   border-bottom-width: 1px;
   border-color: #dddddd
 }
+.web-header {
+  position: fixed;
+  z-index: 8
+}
+
 
 .last-btn {
   align-items: flex-end;
@@ -336,11 +327,7 @@ export default {
 }
 
 .list-container {
-  display: flex;
-  border-color: #000000;
-  box-shadow: -2px 0 4px #888888;
-  border-left-width: 1;
-  border-color: rgb(37, 37, 37);
+  margin-top: 100px;
 }
 
 .list-single-cell {
@@ -426,7 +413,8 @@ export default {
   left: -450px;
   top: 0;
   bottom: 0;
-  box-shadow: 10
+  box-shadow: 10;
+  z-index: 10000;
 }
 
 .slide-list-header {
@@ -458,6 +446,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
+  z-index: 9999
 }
 
 .mask-blcok {

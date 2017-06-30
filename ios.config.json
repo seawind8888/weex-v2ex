@@ -1,9 +1,9 @@
 {
-   "AppName":"WeexApp",
+   "AppName":"V2EX",
    "Version":"0.1",
    "BuildVersion":"0.1.0",
    "AppId":"",
    "CodeSign":"",
    "Profile":"",
-   "WeexBundle":"index.js"
+   "WeexBundle":"app.weex.js"
 }
