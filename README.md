@@ -69,10 +69,15 @@
 ## 5.运行效果 
 <br/>
 ### web
+
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-web.gif) 
+<br/>
 ### android
+
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-android.gif)
+<br/>
 ### ios
+
  ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-ios.gif)  
 
 
