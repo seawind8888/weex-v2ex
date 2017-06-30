@@ -1,6 +1,6 @@
 
-# Weex高仿v2ex三端客户端
-基于weex+vue+vuex搭建的3端一致的v2ex高仿客户端
+# Weex高仿v2ex三端app
+基于weex+vue+vuex搭建的三端一致的v2ex高仿客户端
 
 ## 1.安装weex环境
 ```
