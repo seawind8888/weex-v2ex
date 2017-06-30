@@ -6,8 +6,8 @@
 ```
 1.npm install -g weex
 
-2.npm install -g weexpack
-# weex客户端cli
+2.npm install -g weexpack  
+(weex客户端cli)
 ```
 ## 2.下载项目
 ```
@@ -46,16 +46,16 @@
 3.cd platform/ios
 
 4.pod install
-# 需安装CocoaPods环境,并且将Podfile ATSDK-weex 改为 ATSDK，不然会报错！
+(需安装CocoaPods环境,并且将Podfile ATSDK-weex 改为 ATSDK，不然会报错！)
 
 5.weexpack run ios
-# 如报错可使用xcode直接运行
+(如报错可使用xcode直接运行)
 ```
 
 ### --调试
 ```
 1.npm install -g weex-toolkit
-# 调试工具
+(安装调试工具)
 
 2.weex debug dist/app.weex.js
 
