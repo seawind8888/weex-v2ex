@@ -2,53 +2,49 @@
 # Weex高仿v2ex三端客户端
 基于weex+vue+vuex搭建的3端一致的v2ex高仿客户端
 
-## 安装配置
-
-### 1.第一步 安装weex环境
+### 第一步 安装weex环境
 ```
-npm install -g weex
+1.npm install -g weex
 
-npm install -g weexpack
-#weex客户端cli
+2.npm install -g weexpack
+# weex客户端cli
 
 ```
-### 2.第二步 配置项目环境
+### 第二步 配置项目环境
 ```
-git clone https://github.com/seawind8888/weex-v2ex
+1.git clone https://github.com/seawind8888/weex-v2ex
 
-cd v2ex_demo
+2.cd v2ex_demo
 
-npm install
+3.npm install
 
 ```
-### 3.第三步 启动项目
+### 第三步 启动项目
 ```
 #web
-npm run dev
-npm run serve
-http://localhost:8010
+1.npm run dev
+2.npm run serve
+3.http://localhost:8010
 
 #android
-npm run dev
-weexpack platform add android
-weexpack run android
+1.npm run dev
+2.weexpack platform add android
+3.weexpack run android
 
 #ios
-npm run dev
-weexpack platform add ios
-cd platform/ios
-pod install
+1.npm run dev
+2.weexpack platform add ios
+3.cd platform/ios
+4.pod install
 #需安装CocoaPods环境,并且将Podfile ATSDK-weex 改为 ATSDK，不然会报错！
-weexpack run ios
+5.weexpack run ios
 #如报错可使用xcode直接运行
 
 #devtool 调试
-npm install -g weex-toolkit
+1.npm install -g weex-toolkit
 #调试工具
-
-weex debug dist/app.weex.js
-
-使用官方platform客户端扫描二维码
+2.weex debug dist/app.weex.js
+3.使用官方platform客户端扫描二维码
 
 ```
 ### 4.Tips
