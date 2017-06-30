@@ -8,7 +8,6 @@
 
 2.npm install -g weexpack
 # weex客户端cli
-
 ```
 ## 2.下载项目
 ```
@@ -17,7 +16,6 @@
 2.cd v2ex_demo
 
 3.npm install
-
 ```
 ## 3.启动项目
 
@@ -28,7 +26,6 @@
 2.npm run serve
 
 3.open http://localhost:8010
-
 ```
 
 ### android
@@ -38,7 +35,6 @@
 2.weexpack platform add android
 
 3.weexpack run android
-
 ```
 
 ### ios
@@ -64,17 +60,19 @@
 2.weex debug dist/app.weex.js
 
 3.使用官方platform客户端扫描二维码
-
 ```
 ## 4.Tips
 
 - 安装官方platform后需修改项目gradle的applicationId，否则会无法安装成功
+- IOS项目里的Podfile 需将 ATSDK-weex 改为 ATSDK
 
 ## 5.运行效果 
 <br/>
-
- ![image](https://github.com/seawind8888/v2ex_demo/blob/master/screenshot/v2ex_app1.gif) 
- ![image](https://github.com/seawind8888/v2ex_demo/blob/master/screenshot/v2ex_app2.gif) 
- ![image](https://github.com/seawind8888/v2ex_demo/blob/master/screenshot/v2ex_app3.gif) 
+### web
+ ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-web.gif) 
+### android
+ ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-android.gif)
+### ios
+ ![image](https://github.com/seawind8888/weex-v2ex/blob/master/screenshot/v2ex-weex-ios.gif)  
 
 
